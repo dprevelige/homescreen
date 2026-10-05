@@ -100,12 +100,6 @@
   }
 }
 
-@media (width >= 960px) {
-  :root {
-    --nav-height: 72px;
-  }
-}
-
 html {
   scrollbar-color: var(--brand-link-color) var(--background-color);
 }

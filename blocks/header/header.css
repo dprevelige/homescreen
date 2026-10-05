@@ -142,8 +142,7 @@ header .nav-change:hover {
 
 @media (width >= 960px) {
   header nav {
-    grid-template: "brand links account" auto / auto 1fr auto;
-    gap: 24px 32px;
+    gap: 16px 32px;
     padding: 16px 32px;
   }
 }
