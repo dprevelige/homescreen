@@ -11,8 +11,11 @@ export default async function decorate(block) {
   const footerPath = footerMeta ? new URL(footerMeta, window.location).pathname : '/footer';
   const fragment = await loadFragment(footerPath);
 
-  // decorate footer DOM
+  // no footer content (e.g. /footer not authored): leave the footer empty
   block.textContent = '';
+  if (!fragment?.firstElementChild) return;
+
+  // decorate footer DOM
   const footer = document.createElement('div');
   while (fragment.firstElementChild) footer.append(fragment.firstElementChild);
 

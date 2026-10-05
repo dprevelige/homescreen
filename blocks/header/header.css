@@ -1,67 +1,155 @@
-/* header and nav layout */
+/* masthead band */
 header .nav-wrapper {
-  background-color: var(--background-color);
   width: 100%;
+  background-color: var(--brand-color);
+  color: var(--background-color);
 }
 
 header nav {
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 12px;
-  margin: auto;
+  display: grid;
+  grid-template:
+    "brand" auto
+    "account" auto
+    "links" auto / 1fr;
+  align-items: center;
+  gap: 16px;
   max-width: 1264px;
   min-height: var(--nav-height);
-  padding: 16px 24px;
+  margin: auto;
+  padding: 20px 16px 16px;
   font-family: var(--body-font-family);
 }
 
-@media (width >= 900px) {
+header nav :focus-visible {
+  outline-color: var(--brand-link-color);
+}
+
+header .nav-brand {
+  grid-area: brand;
+  margin: 0;
+  font-family: var(--heading-font-family);
+  font-size: var(--heading-font-size-l);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.08em;
+}
+
+/* quick links */
+header .nav-links {
+  grid-area: links;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+header .nav-links a:any-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: var(--target-size);
+  color: var(--brand-link-color);
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: underline transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition: color 0.2s, text-decoration-color 0.2s;
+}
+
+header .nav-links a:any-link::after {
+  content: '';
+  width: 14px;
+  height: 14px;
+  background-color: currentcolor;
+  mask: url('../../icons/external.svg') center / contain no-repeat;
+}
+
+header .nav-links a:hover {
+  color: var(--background-color);
+  text-decoration-color: currentcolor;
+}
+
+/* org status + change */
+header .nav-account {
+  grid-area: account;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+header .nav-org {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: var(--target-size);
+  padding: 0 14px 0 12px;
+  border-radius: var(--radius-pill);
+  background-color: rgb(241 242 246 / 8%);
+  font-size: var(--body-font-size-s);
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+header .nav-org-dot {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px var(--brand-link-color);
+}
+
+header .nav-org[data-state="resolved"] .nav-org-dot {
+  background-color: var(--status-color);
+  box-shadow: none;
+}
+
+header .nav-change:any-link {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  min-height: var(--target-size);
+  padding: 0 16px;
+  border: 1.5px solid var(--brand-link-color);
+  border-radius: var(--radius-pill);
+  box-sizing: border-box;
+  color: var(--background-color);
+  font-size: var(--body-font-size-s);
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+
+header .nav-change:hover {
+  border-color: var(--background-color);
+  background-color: var(--background-color);
+  color: var(--brand-color);
+}
+
+@media (width >= 600px) {
   header nav {
+    grid-template:
+      "brand account" auto
+      "links links" auto / 1fr auto;
+    padding: 16px 24px;
+  }
+}
+
+@media (width >= 960px) {
+  header nav {
+    grid-template: "brand links account" auto / auto 1fr auto;
+    gap: 24px 32px;
     padding: 16px 32px;
   }
 }
 
-/* row 1: brand and org */
-header nav .nav-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-}
-
-header nav .nav-brand h2 {
-  margin: 0;
-  font-size: var(--heading-font-size-m);
-  line-height: 1.2;
-}
-
-header nav .nav-account {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-width: 0;
-}
-
-header nav .nav-org {
-  font-weight: 600;
-  text-align: right;
-  overflow-wrap: anywhere;
-}
-
-header nav .nav-change {
-  flex-shrink: 0;
-  padding: 0.3em 1em;
-  font-size: var(--body-font-size-xs);
-}
-
-/* row 2: links */
-header nav .nav-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 32px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+@media (prefers-reduced-motion: reduce) {
+  header nav * {
+    transition: none;
+  }
 }
