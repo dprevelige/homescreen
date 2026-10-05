@@ -2,14 +2,13 @@
  * Header Block
  * Row 1: "HOMESCREEN" heading and the signed-in user's org name. The ownerOrg comes from
  * the AEM Sidekick profile and is looked up in the orgs sheet; unmatched IDs are shown as is.
- * "Change" opens the admin account picker in a popup.
+ * "Change" opens the project admin tool in a new tab.
  * Row 2: links from a sheet, displayed inline.
  */
 
 const LINKS_URL = 'https://main--homescreen--dprevelige.aem.page/data/sheets/links.json';
 const ORGS_URL = 'https://main--homescreen--dprevelige.aem.page/data/sheets/orgs.json';
-const LOGIN_URL = 'https://admin.hlx.page/auth/adobe?selectAccount=true';
-const LOGIN_TIMEOUT = 5 * 60 * 1000;
+const CHANGE_URL = 'https://tools.aem.live/tools/project-admin/index.html';
 const NO_ORG = 'No Organization';
 
 async function fetchSheet(url) {
@@ -81,41 +80,6 @@ function toUrl(link) {
 }
 
 /**
- * Opens the admin login in a popup (the IMS login page cannot be framed) and resolves
- * once the popup is closed. The auth_token cookie is HttpOnly on admin.hlx.page, so it
- * stays with the browser and is never readable here.
- * @returns {Promise<boolean>} false if the popup was blocked
- */
-function openAccountPicker() {
-  const width = 600;
-  const height = 700;
-  const left = Math.max(0, window.screenX + (window.outerWidth - width) / 2);
-  const top = Math.max(0, window.screenY + (window.outerHeight - height) / 2);
-  const popup = window.open(
-    LOGIN_URL,
-    'aem-login',
-    `popup,width=${width},height=${height},left=${left},top=${top}`,
-  );
-  if (!popup) return Promise.resolve(false);
-  popup.focus();
-
-  return new Promise((resolve) => {
-    let timeout;
-    const interval = setInterval(() => {
-      if (popup.closed) {
-        clearInterval(interval);
-        clearTimeout(timeout);
-        resolve(true);
-      }
-    }, 500);
-    timeout = setTimeout(() => {
-      clearInterval(interval);
-      resolve(true);
-    }, LOGIN_TIMEOUT);
-  });
-}
-
-/**
  * Decorates the header
  * @param {Element} block The header block element
  */
@@ -142,9 +106,11 @@ export default async function decorate(block) {
   org.className = 'nav-org';
   org.textContent = NO_ORG;
 
-  const change = document.createElement('button');
-  change.type = 'button';
-  change.className = 'button nav-change';
+  const change = document.createElement('a');
+  change.href = CHANGE_URL;
+  change.target = '_blank';
+  change.rel = 'noopener noreferrer';
+  change.className = 'button secondary nav-change';
   change.textContent = 'Change';
 
   account.append(org, change);
@@ -157,12 +123,6 @@ export default async function decorate(block) {
     const version = profileVersion;
     const name = await resolveOrgName(profile?.ownerOrg);
     if (version === profileVersion) org.textContent = name;
-  });
-
-  change.addEventListener('click', async () => {
-    change.disabled = true;
-    await openAccountPicker();
-    change.disabled = false;
   });
 
   const linksRow = document.createElement('ul');
