@@ -1,0 +1,33 @@
+.links {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+
+.links .links-column h2 {
+  margin: 0 0 16px;
+}
+
+.links .links-org {
+  margin-bottom: 24px;
+}
+
+.links .links-org h3 {
+  margin: 0 0 8px;
+  font-size: var(--heading-font-size-s);
+}
+
+.links .links-org ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.links .links-org li {
+  margin: 4px 0;
+}
+
+@media (width >= 600px) {
+  .links {
+    grid-template-columns: 1fr 1fr;
+  }
+}
