@@ -1,10 +1,10 @@
 /*
  * Header Block
- * Row 1: "HOMESCREEN" heading and the signed-in user's org name. The ownerOrg comes from
- * the AEM Sidekick profile and is looked up in the orgs sheet; unmatched IDs are shown as is.
- * "Change" opens the project admin tool in a new tab.
- * Row 2: links from a sheet, displayed inline.
+ * Masthead: "HOMESCREEN" wordmark, quick links from a sheet, and the signed-in user's org.
+ * The ownerOrg comes from the AEM Sidekick profile and is looked up in the orgs sheet;
+ * unmatched IDs are shown as is. "Change" opens the project admin tool in a new tab.
  */
+import createExternalLink from '../../scripts/external-link.js';
 
 const LINKS_URL = 'https://main--homescreen--dprevelige.aem.page/data/sheets/links.json';
 const ORGS_URL = 'https://main--homescreen--dprevelige.aem.page/data/sheets/orgs.json';
@@ -90,31 +90,37 @@ export default async function decorate(block) {
   nav.id = 'nav';
   nav.setAttribute('aria-label', 'Main');
 
-  const top = document.createElement('div');
-  top.className = 'nav-top';
-
-  const brand = document.createElement('div');
+  // the wordmark is the page title unless the authored content brings its own h1
+  const brand = document.createElement(document.querySelector('main h1') ? 'p' : 'h1');
   brand.className = 'nav-brand';
-  const heading = document.createElement('h2');
-  heading.textContent = 'HOMESCREEN';
-  brand.append(heading);
+  brand.textContent = 'HOMESCREEN';
+
+  const linksRow = document.createElement('ul');
+  linksRow.className = 'nav-links';
+  linksRow.setAttribute('aria-label', 'Quick links');
 
   const account = document.createElement('div');
   account.className = 'nav-account';
 
   const org = document.createElement('div');
   org.className = 'nav-org';
-  org.textContent = NO_ORG;
+  org.dataset.state = 'none';
+  org.setAttribute('role', 'status');
+  const dot = document.createElement('span');
+  dot.className = 'nav-org-dot';
+  dot.setAttribute('aria-hidden', 'true');
+  const label = document.createElement('span');
+  label.className = 'visually-hidden';
+  label.textContent = 'Sidekick organization: ';
+  const orgName = document.createElement('span');
+  orgName.className = 'nav-org-name';
+  orgName.textContent = NO_ORG;
+  org.append(dot, label, orgName);
 
-  const change = document.createElement('a');
-  change.href = CHANGE_URL;
-  change.target = '_blank';
-  change.rel = 'noopener noreferrer';
-  change.className = 'button secondary nav-change';
-  change.textContent = 'Change';
+  const change = createExternalLink(CHANGE_URL, 'Change', 'nav-change');
 
   account.append(org, change);
-  top.append(brand, account);
+  nav.append(brand, linksRow, account);
 
   // ignore lookups that finish after a newer profile has arrived
   let profileVersion = 0;
@@ -122,13 +128,10 @@ export default async function decorate(block) {
     profileVersion += 1;
     const version = profileVersion;
     const name = await resolveOrgName(profile?.ownerOrg);
-    if (version === profileVersion) org.textContent = name;
+    if (version !== profileVersion) return;
+    orgName.textContent = name;
+    org.dataset.state = name === NO_ORG ? 'none' : 'resolved';
   });
-
-  const linksRow = document.createElement('ul');
-  linksRow.className = 'nav-links';
-
-  nav.append(top, linksRow);
 
   const navWrapper = document.createElement('div');
   navWrapper.className = 'nav-wrapper';
@@ -139,12 +142,7 @@ export default async function decorate(block) {
 
   links.forEach((link) => {
     const li = document.createElement('li');
-    const a = document.createElement('a');
-    a.href = toUrl(link);
-    a.textContent = link;
-    a.target = '_blank';
-    a.rel = 'noopener noreferrer';
-    li.append(a);
+    li.append(createExternalLink(toUrl(link), link));
     linksRow.append(li);
   });
 }

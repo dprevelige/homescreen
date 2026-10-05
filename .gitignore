@@ -13,3 +13,11 @@ helix-importer-ui
 !AGENTS.md
 
 .vscode/settings.json
+
+# stardust redesign working files (not served)
+stardust/
+PRODUCT.md
+DESIGN.md
+DESIGN.json
+DESIGN-*.md
+DESIGN-*.json
