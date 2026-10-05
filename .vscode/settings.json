@@ -1,0 +1,4 @@
+{
+    "chat.experimental.useSkillAdherencePrompt": true,
+    "chat.newSession.defaultMode": "Agent"
+}

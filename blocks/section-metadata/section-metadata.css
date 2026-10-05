@@ -1,0 +1,140 @@
+/* Applied to sections via the section-metadata block */
+main > .section {
+  --top-bottom-spacing: 0;
+  --gap-spacing: var(--spacing-l);
+  --section-container-width: var(--grid-container-width);
+}
+
+main > .section[class*="spacing-"] {
+  padding-block: var(--top-bottom-spacing);
+}
+
+main > .section.spacing-xs { --top-bottom-spacing: calc(var(--spacing-xs) * 2); }
+main > .section.spacing-s { --top-bottom-spacing: calc(var(--spacing-s) * 2); }
+main > .section.spacing-m { --top-bottom-spacing: calc(var(--spacing-m) * 2); }
+main > .section.spacing-l { --top-bottom-spacing: calc(var(--spacing-l) * 2); }
+main > .section.spacing-xl { --top-bottom-spacing: calc(var(--spacing-xl) * 2); }
+main > .section.spacing-xxl { --top-bottom-spacing: calc(var(--spacing-xxl) * 2); }
+
+main > .section.gap-xs { --gap-spacing: var(--spacing-xs); }
+main > .section.gap-s { --gap-spacing: var(--spacing-s); }
+main > .section.gap-m { --gap-spacing: var(--spacing-m); }
+main > .section.gap-l { --gap-spacing: var(--spacing-l); }
+main > .section.gap-xl { --gap-spacing: var(--spacing-xl); }
+main > .section.gap-xxl { --gap-spacing: var(--spacing-xxl); }
+
+main > .section.grid-2 { --grid-size: 2; }
+main > .section.grid-3 { --grid-size: 3; }
+main > .section.grid-4 { --grid-size: 4; }
+main > .section.grid-5 { --grid-size: 5; }
+main > .section.grid-6 { --grid-size: 6; }
+
+main > .section .block-content {
+  max-width: 1200px;
+  margin-inline: auto;
+}
+
+main > .section .block-content > div {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+main > .section.grid .block-content,
+main > .section.layout-bento .block-content {
+  display: grid;
+  gap: var(--gap-spacing);
+  grid-template-columns: 1fr;
+  padding-inline: 24px;
+}
+
+main > .section.center .default-content-wrapper {
+  text-align: center;
+}
+
+main > .section.container .default-content-wrapper,
+main > .section.container .block-content {
+  max-width: var(--section-container-width);
+  margin-inline: auto;
+}
+
+main > .section.container-2 { --section-container-width: calc(var(--grid-column-width) * 4); }
+main > .section.container-4 { --section-container-width: calc(var(--grid-column-width) * 8); }
+main > .section.container-6 { --section-container-width: var(--grid-container-width); }
+
+main > .section.dark-scheme {
+  color: var(--background-color);
+}
+
+main > .section.dark-scheme a:any-link {
+  color: inherit;
+}
+
+main > .section.has-background {
+  position: relative;
+}
+
+main > .section.has-background > div {
+  position: relative;
+}
+
+main > .section > picture.section-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+main > .section > picture.section-background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (width >= 600px) {
+  main > .section.grid-2 .block-content {
+    grid-template-columns: repeat(var(--grid-size), 1fr);
+  }
+}
+
+@media (width >= 900px) {
+  main > .section.grid-4 .block-content,
+  main > .section.grid-6 .block-content {
+    grid-template-columns: repeat(calc(var(--grid-size) / 2), 1fr);
+  }
+
+  main > .section.container-4 { --section-container-width: calc(var(--grid-column-width) * 4); }
+  main > .section.container-6 { --section-container-width: calc(var(--grid-column-width) * 6); }
+
+  main > .section.peek-background .section-background img {
+    object-position: 0 40%;
+  }
+
+  main > .section.peek-background .default-content-wrapper {
+    margin-bottom: calc(var(--spacing-xxl) * 12);
+  }
+
+  main > .section.layout-bento .block-content {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-areas:
+      "one   one   two"
+      "one   one   three"
+      "four  five  five";
+  }
+
+  main > .section.layout-bento .block-content > * { container-type: inline-size; }
+  main > .section.layout-bento .block-content > :nth-child(1) { grid-area: one; }
+  main > .section.layout-bento .block-content > :nth-child(2) { grid-area: two; }
+  main > .section.layout-bento .block-content > :nth-child(3) { grid-area: three; }
+  main > .section.layout-bento .block-content > :nth-child(4) { grid-area: four; }
+  main > .section.layout-bento .block-content > :nth-child(5) { grid-area: five; }
+}
+
+@media (width >= 1200px) {
+  main > .section.grid .block-content {
+    grid-template-columns: repeat(var(--grid-size), 1fr);
+  }
+}

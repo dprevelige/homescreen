@@ -1,0 +1,88 @@
+.card {
+  --card-spacing: var(--spacing-l);
+
+  height: 100%;
+  overflow-wrap: break-word;
+  overflow: hidden;
+  box-shadow: 0 1px 6px 0 rgb(0 0 0 / 12%);
+  background-color: var(--light-color);
+  color: var(--text-color);
+  transition: all 0.25s ease-in-out;
+}
+
+.card .card-inner {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100%;
+}
+
+.card:not(.quiet) .card-picture-container {
+  position: relative;
+  padding-bottom: 60%;
+}
+
+.card:not(.quiet) .card-picture-container picture {
+  position: absolute;
+  inset: 0;
+  opacity: 0.85;
+  transition: opacity 0.25s ease-in-out;
+}
+
+.card:not(.quiet) .card-picture-container img {
+  display: block;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.card .card-content-container {
+  padding: var(--card-spacing);
+}
+
+.card .card-content-container > :first-child {
+  margin-top: 0;
+}
+
+.card .card-content-container > :last-child {
+  margin-bottom: 0;
+}
+
+.card .card-content-container:has(+ .card-cta-container) {
+  padding-bottom: var(--spacing-m);
+}
+
+.card .card-cta-container {
+  display: flex;
+  justify-content: end;
+  margin: 0;
+  padding: 0 var(--card-spacing) var(--card-spacing);
+}
+
+.card:not(.quiet):hover {
+  transform: scale(1.005);
+  box-shadow: 0 2px 8px 0 rgb(0 0 0 / 16%);
+}
+
+.card:not(.quiet):hover picture {
+  opacity: 1;
+}
+
+/* variants */
+.card.center {
+  text-align: center;
+}
+
+.card.center .card-cta-container {
+  justify-content: center;
+}
+
+.card.quiet {
+  --card-spacing: 0;
+
+  box-shadow: none;
+  background-color: transparent;
+}
+
+.card.quiet .card-content-container > * {
+  margin: 6px 0;
+}
