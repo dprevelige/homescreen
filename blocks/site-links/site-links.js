@@ -13,7 +13,13 @@ const DEFAULT_SOURCE = '/data/sheets/sites.json';
 const LINKS = [
   { key: 'Github', label: 'GitHub' },
   { key: 'DA', label: 'DA' },
+  { key: 'Site', label: 'Site' },
 ];
+
+function getSiteUrl(daUrl) {
+  const [repo, org] = String(daUrl || '').split('/').filter(Boolean).reverse();
+  return repo && org ? `https://main--${repo}--${org}.aem.page` : '';
+}
 
 function getSource(block) {
   const link = block.querySelector('a[href]');
@@ -69,7 +75,8 @@ function buildSection(title, rows, index) {
 
     const actions = document.createElement('div');
     actions.className = 'site-links-actions';
-    LINKS.forEach(({ key, label }) => actions.append(buildLink(row[key], label, exists)));
+    const urls = { ...row, Site: getSiteUrl(row.DA) };
+    LINKS.forEach(({ key, label }) => actions.append(buildLink(urls[key], label, exists)));
 
     li.append(name, actions);
     list.append(li);

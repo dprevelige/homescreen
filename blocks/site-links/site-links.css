@@ -1,35 +1,35 @@
 .site-links {
   display: grid;
-  gap: 40px;
-  padding: 24px 0 32px;
+  gap: 24px;
+  padding: 16px 0 24px;
 }
 
 .site-links .site-links-section h2 {
-  margin: 0 0 16px;
-  padding-bottom: 12px;
+  margin: 0 0 10px;
+  padding-bottom: 6px;
   border-bottom: 1px solid var(--border-color);
-  font-size: var(--heading-font-size-l);
+  font-size: var(--heading-font-size-m);
 }
 
 .site-links .site-links-sites {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 12px;
+  gap: 8px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .site-links .site-links-site {
-  padding: 14px 16px;
+  padding: 10px 12px;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-m);
   background-color: var(--light-color);
 }
 
 .site-links .site-links-site h3 {
-  margin: 0 0 10px;
-  font-size: var(--heading-font-size-m);
+  margin: 0 0 6px;
+  font-size: var(--heading-font-size-s);
 }
 
 .site-links .site-links-actions {
