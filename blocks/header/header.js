@@ -5,6 +5,7 @@
  * unmatched IDs are shown as is. "Change" opens the project admin tool in a new tab.
  */
 import createExternalLink from '../../scripts/external-link.js';
+import createProfile from '../../scripts/profile.js';
 
 const LINKS_URL = 'https://main--homescreen--dprevelige.aem.page/data/sheets/links.json';
 const ORGS_URL = 'https://main--homescreen--dprevelige.aem.page/data/sheets/orgs.json';
@@ -119,7 +120,7 @@ export default async function decorate(block) {
 
   const change = createExternalLink(CHANGE_URL, 'Change', 'nav-change');
 
-  account.append(org, change);
+  account.append(org, change, createProfile());
   nav.append(brand, linksRow, account);
 
   // ignore lookups that finish after a newer profile has arrived
